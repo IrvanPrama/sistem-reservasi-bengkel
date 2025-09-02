@@ -105,6 +105,7 @@ class TransactionResource extends Resource
     {
         return [
             'index' => TransactionResource\Pages\ListTransactions::route('/'),
+            
         ];
     }
 }
