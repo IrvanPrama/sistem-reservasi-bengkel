@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('nama_supplier');
             $table->string('no_telepon');
             $table->string('email')->unique();
+            $table->string('tanggal_pembelian');
             $table->string('alamat');
             $table->string('item_terpilih');
             $table->integer('subtotal');

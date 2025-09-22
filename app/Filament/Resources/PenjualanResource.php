@@ -46,6 +46,9 @@ class PenjualanResource extends Resource
                 Forms\Components\TextInput::make('tanggal_booking')
                     ->required()
                     ->maxLength(255),
+                Forms\Components\TextInput::make('tanggal_transaksi')
+                    ->required()
+                    ->maxLength(255),
                 Forms\Components\TextInput::make('jenis_layanan')
                     ->required()
                     ->maxLength(255),

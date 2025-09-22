@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('merek');
             $table->string('no_plat');
             $table->string('tanggal_booking');
+            $table->string('tanggal_transaksi');
             $table->string('jenis_layanan');
             $table->string('layanan_tambahan');
             $table->string('item_terpilih');

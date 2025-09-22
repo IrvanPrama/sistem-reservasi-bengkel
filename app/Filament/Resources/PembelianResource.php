@@ -34,6 +34,9 @@ class PembelianResource extends Resource
                     ->email()
                     ->required()
                     ->maxLength(255),
+                Forms\Components\TextInput::make('tanggal_pembelian')
+                    ->required()
+                    ->maxLength(255),
                 Forms\Components\TextInput::make('alamat')
                     ->required()
                     ->maxLength(255),

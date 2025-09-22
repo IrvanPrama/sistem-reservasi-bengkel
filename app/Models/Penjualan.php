@@ -17,6 +17,7 @@ class Penjualan extends Model
             'merek',
             'no_plat',
             'tanggal_booking',
+            'tanggal_transaksi',
             'jenis_layanan',
             'layanan_tambahan',
             'item_terpilih',

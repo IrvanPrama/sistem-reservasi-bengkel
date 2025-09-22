@@ -11,9 +11,10 @@ class Pembelian extends Model
 {
     use HasFactory, Notifiable;
      protected $fillable = [
-            'nama_suppplier',
+            'nama_supplier',
             'no_telepon',
             'email',
+            'tanggal_pembelian',
             'alamat',
             'item_terpilih',
             'subtotal', 
