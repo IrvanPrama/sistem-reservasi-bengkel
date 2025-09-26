@@ -34,73 +34,54 @@ class OrderResource extends Resource
                     ->maxLength(20),
 
                 Forms\Components\Repeater::make('items')
-                    ->relationship('items')
-                    ->label('Produk yang dipesan')
-                    ->schema([
+    ->relationship('items')
+    ->label('Produk yang dipesan')
+    ->schema([
+        Forms\Components\Select::make('product_name')
+            ->label('Produk')
+            ->options(Product::all()->pluck('product_name', 'product_name'))
+            ->searchable()
+            ->required()
+            ->reactive()
+            ->afterStateUpdated(function ($state, callable $set, $get) {
+                $product = Product::where('product_name', $state)->first();
+                if ($product) {
+                    $set('price', $product->price);
+                    // reset quantity supaya perhitungan ulang
+                    $set('quantity', 1);
+                }
+            }),
 
-                        Forms\Components\Select::make('product_id')
-                            ->label('Produk')
-                            ->relationship('product', 'product_name')
-                            ->searchable()
-                            ->required()
-                            ->reactive()
-                            ->afterStateUpdated(function ($state, callable $set, callable $get) {
-                                if ($state) {
-                                    $product = \App\Models\Product::find($state);
+        Forms\Components\TextInput::make('price')
+            ->label('Harga Satuan')
+            ->numeric()
+            ->readOnly(),
 
-                                    // isi harga produk
-                                    $set('price', $product?->price ?? 0);
+        Forms\Components\TextInput::make('quantity')
+            ->label('Jumlah')
+            ->numeric()
+            ->default(0)    
+            ->minValue(1)
+            ->reactive()
+            ->afterStateUpdated(function ($state, callable $set, $get) {
+                $subtotal = ($get('price') ?? 0) * ($state ?? 0);
+                $set('total_amount', $subtotal);
 
-                                    // hitung total ulang
-                                    $items = $get('../../items');
-                                    $total = collect($items)->sum(function ($item) {
-                                        $product = \App\Models\Product::find($item['product_id'] ?? null);
-                                        $qty = (int)($item['quantity'] ?? 0);
-                                        $price = (float)($product?->price ?? 0);
-                                        return $qty * $price;
-                                    });
-                                    $set('../../total_amount', $total);
-                                }
-                            })
-                            ->formatStateUsing(fn ($state) => $state !== null 
-                                ? number_format($state, 0, ',', '.') 
-                                : 0
-                            ),
+                // hitung ulang total semua item
+                $items = $get('../../items'); // ambil semua item repeater
+                $grandTotal = collect($items)->sum('total_amount');
+                $set('../../total_amount', $grandTotal);
+            }),
 
-                        Forms\Components\TextInput::make('quantity')
-                            ->label('Jumlah')
-                            ->numeric()
-                            ->minValue(1)
-                            ->default(1)
-                            ->reactive()
-                            ->afterStateUpdated(function ($state, callable $set, callable $get) {
-                                $items = $get('../../items'); 
-                                $total = collect($items)->sum(function ($item) {
-                                    $product = \App\Models\Product::find($item['product_id'] ?? null);
-                                    $qty = (int)($item['quantity'] ?? 0);
-                                    $price = (float)($product?->price ?? 0);
-                                    return $qty * $price;
-                                });
-                                $set('../../total_amount', $total);
-                            }),
+        Forms\Components\TextInput::make('total_amount')
+            ->label('Subtotal')
+            ->numeric()
+            ->readOnly(),
+    ])
+    ->columns(4)
+    ->createItemButtonLabel('Tambah Produk'),
 
-                        Forms\Components\TextInput::make('price')
-                            ->label('Harga Satuan')
-                            ->numeric()
-                            ->readOnly(),
-                    ])
-                    ->columns(3)
-                    ->createItemButtonLabel('Tambah Produk'),
-
-                Forms\Components\TextInput::make('total_amount')
-                    ->label('Total Bayar')
-                    ->numeric()
-                    ->readOnly()
-                    ->prefix('Rp')
-                    ->formatStateUsing(fn ($state) => $state !== null 
-                        ? number_format($state, 0, ',', '.') 
-                        : 0
-                    ), 
+                    
             ]);
     }
 
