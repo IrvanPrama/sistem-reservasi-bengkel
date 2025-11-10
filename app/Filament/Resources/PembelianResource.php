@@ -3,15 +3,15 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\PembelianResource\Pages;
-use App\Filament\Resources\PembelianResource\RelationManagers;
 use App\Models\Pembelian;
+use App\Models\Product;
 use Filament\Forms;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class PembelianResource extends Resource
 {
@@ -19,39 +19,83 @@ class PembelianResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?string $navigationLabel = 'Pembelian Produk';
+    protected static ?int $navigationSort = 9;
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('nama_supplier')
+                Select::make('product_id')
+                    ->label('Pilih Produk')
+                    ->options(Product::query()->pluck('product_name', 'id'))
+                    ->searchable()
+                    ->required()
+                    ->reactive()
+                    ->afterStateUpdated(function ($state, callable $set) {
+                        // Ambil product berdasarkan id yang dipilih
+                        $product = Product::find($state);
+                        // Isi otomatis field SKU
+                        $set('product_name', $product?->product_name ?? '');
+                        $set('sku', $product?->sku ?? '');
+                        $set('sell_price', $product?->sell_price ?? '');
+                    }),
+
+                TextInput::make('product_name')
+                    ->label('Produkt Name')
+                    ->required()
+                    ->maxLength(255)
+                    ->disabled() // Supaya tidak bisa diubah manual
+                    ->dehydrated(), // Tapi tetap disimpan di database
+
+                TextInput::make('sku')
+                    ->label('SKU')
+                    ->required()
+                    ->maxLength(255)
+                    ->disabled() // Supaya tidak bisa diubah manual
+                    ->dehydrated(), // Tapi tetap disimpan di database
+
+                TextInput::make('nama_supplier')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('no_telepon')
+                TextInput::make('no_telepon')
                     ->tel()
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('email')
+                TextInput::make('email')
                     ->email()
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('tanggal_pembelian')
+                Forms\Components\DatePicker::make('tanggal_pembelian')
+                    ->required(),
+                TextInput::make('alamat')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('alamat')
+                TextInput::make('qty')
                     ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('item_terpilih')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('subtotal')
+                    ->numeric()
+                    ->reactive()
+                            ->afterStateUpdated(function ($state, callable $set, $get) {
+                                $subtotal = ($get('sell_price') ?? 0) * ($state ?? 0);
+                                $set('total', $subtotal);
+
+                                // hitung ulang total semua item
+                                $items = $get('../../items'); // ambil semua item repeater
+                                $grandTotal = collect($items)->sum('total');
+                                $set('../../total', $grandTotal);
+                            }),
+                TextInput::make('hpp')
                     ->required()
                     ->numeric(),
-                Forms\Components\TextInput::make('diskon')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('total')
+                TextInput::make('sell_price')
                     ->required()
                     ->numeric(),
+                TextInput::make('total')
+                    ->required()
+                    ->numeric(),
+                TextInput::make('metode_pembayaran')
+                    ->required()
+                    ->maxLength(255),
             ]);
     }
 
@@ -59,36 +103,20 @@ class PembelianResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('nama_supplier')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('no_telepon')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('email')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('alamat')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('item_terpilih')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('subtotal')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('diskon')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('total')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('product_name')->label('Product Name')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('sku')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('nama_supplier')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('no_telepon')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('email')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('tanggal_pembelian')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('alamat')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('qty')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('hpp')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('sell_price')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('total')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('metode_pembayaran')->sortable()->searchable(),
             ])
-            ->filters([
-                //
-            ])
+            ->filters([])
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])
@@ -101,9 +129,7 @@ class PembelianResource extends Resource
 
     public static function getRelations(): array
     {
-        return [
-            //
-        ];
+        return [];
     }
 
     public static function getPages(): array

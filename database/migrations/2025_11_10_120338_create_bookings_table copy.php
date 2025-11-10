@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -13,21 +12,21 @@ return new class extends Migration
     {
         Schema::create('bookings', function (Blueprint $table) {
             $table->id();
-             $table->string('id_booking');
+            $table->string('nomor_antrian')->unique()->nullable();
             $table->string('nama_pelanggan');
             $table->string('no_telepon');
-            $table->string('email')->unique();
+            $table->string('email');
             $table->string('alamat');
-            $table->string('tanggal');
-            $table->string('jam_kedatangan');
+            $table->date('tanggal');
+            $table->time('jam_kedatangan');
             $table->string('merek');
             $table->string('no_plat');
             $table->string('tahun');
-            $table->string('layanan');
-            $table->string('keterangan');
-            $table->string('estimasi_waktu');
-            $table->integer('estimasi_biaya');
-            $table->string('status');
+            $table->text('keluhan');
+            $table->text('keterangan')->nullable();
+            $table->string('estimasi_waktu')->nullable();
+            $table->decimal('estimasi_biaya', 15, 2)->nullable();
+            $table->string('status')->default('pending');
             $table->timestamps();
         });
     }
@@ -37,6 +36,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('bookings');
     }
 };

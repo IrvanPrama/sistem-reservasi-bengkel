@@ -3,15 +3,12 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProductResource\Pages;
-use App\Filament\Resources\ProductResource\RelationManagers;
 use App\Models\Product;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ProductResource extends Resource
 {
@@ -23,37 +20,20 @@ class ProductResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('product_id')
+                Forms\Components\TextInput::make('sku')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('product_name')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('quantity')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('price')
+                Forms\Components\TextInput::make('sell_price')
                     ->required()
                     ->numeric()
                     ->prefix('Rp')
-                    ->formatStateUsing(fn ($state) => $state !== null 
-                        ? number_format($state, 0, ',', '.') 
+                    ->formatStateUsing(fn ($state) => $state !== null
+                        ? number_format($state, 0, ',', '.')
                         : 0
                     ),
-                Forms\Components\TextInput::make('restock')
-                    ->label('Tambah Stok')
-                    ->numeric()
-                    ->reactive()
-                    ->afterStateUpdated(function ($state, $set, $get, $record) {
-                        if ($state > 0) {
-                            \App\Models\StockMovement::create([
-                                'product_id' => $record->id,
-                                'type' => 'in',
-                                'quantity' => $state,
-                                'note' => 'Restock Manual',
-                            ]);
-                        }
-                    })
             ]);
     }
 
@@ -61,31 +41,19 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('product_id')
+                Tables\Columns\TextColumn::make('sku')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('product_name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('quantity')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('price')
+                Tables\Columns\TextColumn::make('sell_price')
                     ->prefix('Rp')
                     ->sortable()
-                    ->formatStateUsing(fn ($state) => $state !== null 
-                        ? number_format($state, 0, ',', '.') 
+                    ->formatStateUsing(fn ($state) => $state !== null
+                        ? number_format($state, 0, ',', '.')
                         : 0
                     ),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -100,7 +68,6 @@ class ProductResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
         ];
     }
 

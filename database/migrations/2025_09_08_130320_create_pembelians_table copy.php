@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -13,15 +12,18 @@ return new class extends Migration
     {
         Schema::create('pembelians', function (Blueprint $table) {
             $table->id();
+            $table->string('sku');
+            $table->string('product_name');
             $table->string('nama_supplier');
             $table->string('no_telepon');
-            $table->string('email')->unique();
-            $table->string('tanggal_pembelian');
+            $table->string('email');
+            $table->date('tanggal_pembelian');
             $table->string('alamat');
-            $table->string('item_terpilih');
-            $table->integer('subtotal');
-            $table->string('diskon');
-            $table->integer('total');
+            $table->integer('qty');
+            $table->decimal('hpp', 15, 2);
+            $table->decimal('sell_price', 15, 2);
+            $table->decimal('total', 15, 2);
+            $table->string('metode_pembayaran');
             $table->timestamps();
         });
     }

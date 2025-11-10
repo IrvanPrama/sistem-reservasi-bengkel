@@ -3,19 +3,19 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\OrderItemResource\Pages;
-use App\Filament\Resources\OrderItemResource\RelationManagers;
 use App\Models\OrderItem;
-use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class OrderItemResource extends Resource
 {
     protected static ?string $model = OrderItem::class;
+
+    protected static ?string $navigationLabel = 'Penjualan';
+
+    protected static ?int $navigationSort = 8;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -23,7 +23,6 @@ class OrderItemResource extends Resource
     {
         return $form
             ->schema([
-                //
             ]);
     }
 
@@ -31,10 +30,13 @@ class OrderItemResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('order_id')->label('Booking ID'),
+                Tables\Columns\TextColumn::make('sku')->label('SKU'),
+                Tables\Columns\TextColumn::make('product_name')->label('Product Name'),
+                Tables\Columns\TextColumn::make('quantity')->label('Quantity'),
+                Tables\Columns\TextColumn::make('sell_price')->label('Sell Price'),
             ])
             ->filters([
-                //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -49,7 +51,6 @@ class OrderItemResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
         ];
     }
 
