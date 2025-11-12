@@ -21,6 +21,11 @@ class OrderItem extends Model
         return $this->belongsTo(Product::class, 'sku', 'sku');
     }
 
+    public function labaRugi()
+    {
+        return $this->hasOne(LabaRugi::class, 'order_item_id');
+    }
+
     protected static function booted()
     {
         static::updating(function ($orderItem) {
@@ -40,11 +45,23 @@ class OrderItem extends Model
                 }
 
                 $productStock->decrement('quantity', $orderItem->quantity);
+
+                // Tambahkan data ke laba_rugi
+                LabaRugi::create([
+                    'type' => 'penjualan',
+                    'date' => now(),
+                    'order_item_id' => $orderItem->id,
+                    'product_name' => $orderItem->product_name,
+                    'total_amount' => $orderItem->total_amount,
+                ]);
             }
 
             // CASE 2: acc → pending
             elseif ($oldStatus == '1' && $orderItem->status == '0') {
                 $productStock->increment('quantity', $orderItem->quantity);
+
+                // Hapus data laba_rugi terkait (opsional)
+                $orderItem->labaRugi()->delete();
             }
 
             // CASE 3: acc → acc (quantity berubah)
@@ -60,6 +77,12 @@ class OrderItem extends Model
                 } else {
                     $productStock->increment('quantity', abs($selisih));
                 }
+
+                // Update juga data laba_rugi
+                $orderItem->labaRugi()->update([
+                    'quantity' => $orderItem->quantity,
+                    'total_amount' => $orderItem->total_amount,
+                ]);
             }
         });
     }
