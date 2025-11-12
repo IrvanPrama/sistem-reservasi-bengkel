@@ -36,6 +36,8 @@ class OrderItemResource extends Resource
                     ->required(),
                 Forms\Components\TextInput::make('sell_price')
                     ->required(),
+                Forms\Components\TextInput::make('total_amount')
+                    ->required(),
                 Forms\Components\Select::make('status')
                     ->options([
                         '0' => 'pending',
@@ -54,6 +56,7 @@ class OrderItemResource extends Resource
                 Tables\Columns\TextColumn::make('product_name')->label('Product Name'),
                 Tables\Columns\TextColumn::make('quantity')->label('Quantity'),
                 Tables\Columns\TextColumn::make('sell_price')->label('Sell Price'),
+                Tables\Columns\TextColumn::make('total_amount')->label('Total Price'),
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
