@@ -106,7 +106,7 @@ class BookingResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
 
-                // 👉 Tambahkan tombol ACC di sini
+                // Tambahkan tombol ACC
                 Tables\Actions\Action::make('acc')
                         ->label('ACC')
                         ->icon('heroicon-o-check-circle')

@@ -12,10 +12,12 @@ return new class extends Migration {
     {
         Schema::create('order_items', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('order_id')->constrained('orders')->onDelete('cascade');
-            $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
+            $table->unsignedBigInteger('order_id');
+            $table->string('sku');
+            $table->string('product_name');
             $table->integer('quantity');
-            $table->decimal('price', 15, 2);
+            $table->decimal('sell_price', 15, 2);
+            $table->integer('status')->default(0); // 0: pending, 1: accepted, 2: canceled
             $table->timestamps();
         });
     }

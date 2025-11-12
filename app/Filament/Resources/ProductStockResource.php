@@ -44,7 +44,7 @@ class ProductStockResource extends Resource
                 Tables\Columns\TextColumn::make('sku')->sortable(),
                 Tables\Columns\TextColumn::make('quantity')->sortable(),
                 Tables\Columns\TextColumn::make('sell_price')->money('idr', true), // jika tersedia; alternatif -> formatStateUsing(...)
-                Tables\Columns\TextColumn::make('created_at')->dateTime()->sortable(),
+                Tables\Columns\TextColumn::make('updated_at')->dateTime()->sortable(),
             ])
             ->filters([
             ])
