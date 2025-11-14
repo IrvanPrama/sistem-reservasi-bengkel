@@ -2,17 +2,17 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\ProductResource\Pages;
-use App\Models\Product;
+use App\Filament\Resources\NeracaTypeResource\Pages;
+use App\Models\NeracaType;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 
-class ProductResource extends Resource
+class NeracaTypeResource extends Resource
 {
-    protected static ?string $model = Product::class;
+    protected static ?string $model = NeracaType::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationGroup = 'Database';
@@ -21,20 +21,15 @@ class ProductResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('sku')
+                Forms\Components\TextInput::make('type')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('product_name')
+                Forms\Components\TextInput::make('sub_type')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('sell_price')
+                Forms\Components\TextInput::make('category')
                     ->required()
-                    ->numeric()
-                    ->prefix('Rp')
-                    ->formatStateUsing(fn ($state) => $state !== null
-                        ? number_format($state, 0, ',', '.')
-                        : 0
-                    ),
+                    ->maxLength(255),
             ]);
     }
 
@@ -42,17 +37,20 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('sku')
+                Tables\Columns\TextColumn::make('type')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('product_name')
+                Tables\Columns\TextColumn::make('sub_type')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('sell_price')
-                    ->prefix('Rp')
+                Tables\Columns\TextColumn::make('category')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->dateTime()
                     ->sortable()
-                    ->formatStateUsing(fn ($state) => $state !== null
-                        ? number_format($state, 0, ',', '.')
-                        : 0
-                    ),
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('updated_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
             ])
@@ -75,9 +73,9 @@ class ProductResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListProducts::route('/'),
-            'create' => Pages\CreateProduct::route('/create'),
-            'edit' => Pages\EditProduct::route('/{record}/edit'),
+            'index' => Pages\ListNeracaTypes::route('/'),
+            'create' => Pages\CreateNeracaType::route('/create'),
+            'edit' => Pages\EditNeracaType::route('/{record}/edit'),
         ];
     }
 }

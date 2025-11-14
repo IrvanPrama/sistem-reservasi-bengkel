@@ -6,17 +6,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 
-class Catatan extends Model
+class CatatanItem extends Model
 {
     use HasFactory;
     use Notifiable;
     protected $fillable = [
-        'title',
-        'deskripsi',
+        'note_id',
+        'note_title',
+        'sub_type',
+        'category',
+        'nominal',
+        'item_description',
     ];
-
-    public function items()
-    {
-        return $this->hasMany(CatatanItem::class, 'note_id');
-    }
 }
