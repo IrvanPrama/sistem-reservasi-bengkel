@@ -10,12 +10,14 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('laba_rugis', function (Blueprint $table) {
+        Schema::create('jurnals', function (Blueprint $table) {
             $table->id();
+            $table->string('order_item_id')->nullable();
             $table->string('type');
             $table->date('date');
             $table->string('product_name');
-            $table->decimal('total_amount', 15, 2);
+            $table->decimal('pemasukan', 15, 2)->nullable();
+            $table->decimal('pengeluaran', 15, 2)->nullable();
             $table->timestamps();
         });
     }
@@ -25,6 +27,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('laba_rugis');
+        Schema::dropIfExists('jurnals');
     }
 };

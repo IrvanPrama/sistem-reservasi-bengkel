@@ -26,6 +26,11 @@ class OrderItem extends Model
         return $this->hasOne(LabaRugi::class, 'order_item_id');
     }
 
+    public function jurnal()
+    {
+        return $this->hasOne(Jurnal::class, 'order_item_id');
+    }
+
     protected static function booted()
     {
         static::updating(function ($orderItem) {
@@ -47,18 +52,30 @@ class OrderItem extends Model
                 $productStock->decrement('quantity', $orderItem->quantity);
 
                 // Tambahkan data ke laba_rugi
+                Jurnal::create([
+                    'type' => 'penjualan',
+                    'date' => now(),
+                    'order_item_id' => $orderItem->id,
+                    'product_name' => $orderItem->product_name,
+                    'pemasukan' => $orderItem->total_amount,
+                ]);
+
+                // Tambahkan data ke laba_rugi
                 LabaRugi::create([
                     'type' => 'penjualan',
                     'date' => now(),
                     'order_item_id' => $orderItem->id,
                     'product_name' => $orderItem->product_name,
-                    'total_amount' => $orderItem->total_amount,
+                    'pemasukan' => $orderItem->total_amount,
                 ]);
             }
 
             // CASE 2: acc → pending
             elseif ($oldStatus == '1' && $orderItem->status == '0') {
                 $productStock->increment('quantity', $orderItem->quantity);
+
+                // Hapus data jurnal terkait (opsional)
+                $orderItem->jurnal()->delete();
 
                 // Hapus data laba_rugi terkait (opsional)
                 $orderItem->labaRugi()->delete();
@@ -78,10 +95,16 @@ class OrderItem extends Model
                     $productStock->increment('quantity', abs($selisih));
                 }
 
+                // Update juga data jurnal
+                $orderItem->jurnal()->update([
+                    'quantity' => $orderItem->quantity,
+                    'pemasukan' => $orderItem->total_amount,
+                ]);
+
                 // Update juga data laba_rugi
                 $orderItem->labaRugi()->update([
                     'quantity' => $orderItem->quantity,
-                    'total_amount' => $orderItem->total_amount,
+                    'pemasukan' => $orderItem->total_amount,
                 ]);
             }
         });
