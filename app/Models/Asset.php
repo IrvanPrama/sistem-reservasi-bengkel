@@ -11,10 +11,12 @@ class Asset extends Model
     use HasFactory;
     use Notifiable;
     protected $fillable = [
+        'sku',
         'nama',
         'kategori',
         'jumlah',
         'nominal',
+        'total_nominal',
         'kondisi',
         'date',
     ];

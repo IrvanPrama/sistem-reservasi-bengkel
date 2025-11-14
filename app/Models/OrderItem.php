@@ -16,6 +16,11 @@ class OrderItem extends Model
         'status',
     ];
 
+    public function asset()
+    {
+        return $this->hasOne(Asset::class, 'sku', 'sku');
+    }
+
     public function product()
     {
         return $this->belongsTo(Product::class, 'sku', 'sku');
@@ -38,8 +43,13 @@ class OrderItem extends Model
             $oldQuantity = $orderItem->getOriginal('quantity');
 
             $productStock = ProductStock::where('sku', $orderItem->sku)->first();
+            $productAsset = Asset::where('sku', $orderItem->sku)->first();
 
             if (!$productStock) {
+                return;
+            }
+
+            if (!$productAsset) {
                 return;
             }
 
@@ -50,6 +60,7 @@ class OrderItem extends Model
                 }
 
                 $productStock->decrement('quantity', $orderItem->quantity);
+                $productAsset->decrement('jumlah', $orderItem->quantity);
 
                 // Tambahkan data ke laba_rugi
                 Jurnal::create([
@@ -73,6 +84,7 @@ class OrderItem extends Model
             // CASE 2: acc → pending
             elseif ($oldStatus == '1' && $orderItem->status == '0') {
                 $productStock->increment('quantity', $orderItem->quantity);
+                $productAsset->increment('jumlah', $orderItem->quantity);
 
                 // Hapus data jurnal terkait (opsional)
                 $orderItem->jurnal()->delete();
@@ -91,8 +103,10 @@ class OrderItem extends Model
                     }
 
                     $productStock->decrement('quantity', $selisih);
+                    $productAsset->decrement('jumlah', $selisih);
                 } else {
                     $productStock->increment('quantity', abs($selisih));
+                    $productAsset->increment('jumlah', abs($selisih));
                 }
 
                 // Update juga data jurnal

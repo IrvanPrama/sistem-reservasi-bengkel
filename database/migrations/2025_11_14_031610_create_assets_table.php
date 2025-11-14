@@ -12,10 +12,12 @@ return new class extends Migration {
     {
         Schema::create('assets', function (Blueprint $table) {
             $table->id();
+            $table->string('sku')->nullable();
             $table->string('nama');
             $table->string('kategori');
             $table->integer('jumlah');
             $table->integer('nominal');
+            $table->integer('total_nominal')->nullable();
             $table->string('kondisi');
             $table->date('date');
             $table->timestamps();

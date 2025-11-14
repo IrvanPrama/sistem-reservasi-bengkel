@@ -3,15 +3,12 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\AssetResource\Pages;
-use App\Filament\Resources\AssetResource\RelationManagers;
 use App\Models\Asset;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class AssetResource extends Resource
 {
@@ -31,8 +28,17 @@ class AssetResource extends Resource
                     ->maxLength(255),
                 Forms\Components\TextInput::make('jumlah')
                     ->required()
-                    ->numeric(),
+                    ->numeric()
+                    ->reactive()
+                    ->afterStateUpdated(function (Forms\Get $get, Forms\Set $set, $state) {
+                        $nominal = $get('nominal') ?? 0;
+                        $total_nominal = $state * $nominal;
+                        $set('total_nominal', $total_nominal);
+                    }),
                 Forms\Components\TextInput::make('nominal')
+                    ->numeric()
+                    ->default(null),
+                Forms\Components\TextInput::make('total_nominal')
                     ->numeric()
                     ->default(null),
                 Forms\Components\TextInput::make('kondisi')
@@ -57,6 +63,9 @@ class AssetResource extends Resource
                 Tables\Columns\TextColumn::make('nominal')
                     ->numeric()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('total_nominal')
+                   ->numeric()
+                   ->sortable(),
                 Tables\Columns\TextColumn::make('kondisi')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('date')
@@ -72,7 +81,6 @@ class AssetResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -87,7 +95,6 @@ class AssetResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
         ];
     }
 
