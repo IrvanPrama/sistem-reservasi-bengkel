@@ -8,6 +8,7 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Filters\Filter;
 use Filament\Tables\Table;
 
 class JurnalResource extends Resource
@@ -51,7 +52,7 @@ class JurnalResource extends Resource
                     ]),
             ])
             ->filters([
-                Filter::make('tanggal')
+                Filter::make('date')
                 ->form([
                     Forms\Components\DatePicker::make('from')
                         ->label('Dari Tanggal'),

@@ -52,7 +52,7 @@ class LabaRugiResource extends Resource
                     ]),
             ])
             ->filters([
-                Filter::make('tanggal')
+                Filter::make('date')
                 ->form([
                     Forms\Components\DatePicker::make('from')
                         ->label('Dari Tanggal'),
