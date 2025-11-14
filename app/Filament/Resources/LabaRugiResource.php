@@ -8,6 +8,7 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Filters\Filter;
 use Filament\Tables\Table;
 
 class LabaRugiResource extends Resource
@@ -51,6 +52,18 @@ class LabaRugiResource extends Resource
                     ]),
             ])
             ->filters([
+                Filter::make('tanggal')
+                ->form([
+                    Forms\Components\DatePicker::make('from')
+                        ->label('Dari Tanggal'),
+                    Forms\Components\DatePicker::make('until')
+                        ->label('Sampai Tanggal'),
+                ])
+                ->query(function ($query, array $data) {
+                    return $query
+                        ->when($data['from'], fn ($q) => $q->whereDate('date', '>=', $data['from']))
+                        ->when($data['until'], fn ($q) => $q->whereDate('date', '<=', $data['until']));
+                }),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
