@@ -33,7 +33,7 @@ class CatatanResource extends Resource
                     ->label('Masukan catatan')
                     ->schema([
                         Select::make('jenis')
-                            ->label('Jenis')
+                            ->label('Pilih Tipe')
                             ->options(NeracaType::all()->pluck('type', 'type'))
                             ->searchable()
                             ->required()
@@ -69,7 +69,8 @@ class CatatanResource extends Resource
                         }),
                         Forms\Components\TextInput::make('category')
                              ->label('Kategori')
-                             ->disabled(),
+                             ->dehydrated(true),
+
                         Forms\Components\TextInput::make('note_title')
                             ->label('Judul Note'),
 

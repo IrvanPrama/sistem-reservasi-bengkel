@@ -1,11 +1,16 @@
 <?php
 
+use App\Http\Controllers\BookingController;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
+Route::view('/', 'booking')->name('booking');        // menampilkan form
+Route::view('/booking', 'booking')->name('booking');        // menampilkan form
+Route::post('/reservasi', [BookingController::class, 'store'])->name('reservasi.store');
+
+// PAGE FORM REGISTER MEMBER
+Route::get('/daftar-member', [PelangganController::class, 'index'])->name('member.form');
+Route::post('/daftar-member', [PelangganController::class, 'store'])->name('member.store');
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
