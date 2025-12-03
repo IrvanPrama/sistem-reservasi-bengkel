@@ -26,4 +26,6 @@ Route::middleware(['auth'])->group(function () {
     Volt::route('settings/appearance', 'settings.appearance')->name('settings.appearance');
 });
 
+Route::get('/booking/{id}', [BookingController::class, 'show'])->name('booking.show');
+
 require __DIR__.'/auth.php';

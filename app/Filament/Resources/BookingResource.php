@@ -106,17 +106,47 @@ class BookingResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
 
-                // Tambahkan tombol ACC
+                // Tombol ACC
                 Tables\Actions\Action::make('acc')
-                        ->label('ACC')
-                        ->icon('heroicon-o-check-circle')
-                        ->color('success')
-                        ->requiresConfirmation()
-                        ->visible(fn ($record) => $record->status != '1') // hanya tampil jika belum di-ACC
-                        ->action(function ($record) {
-                            $record->update(['status' => '1']);
-                        }),
+                    ->label('ACC')
+                    ->icon('heroicon-o-check-circle')
+                    ->color('success')
+                    ->requiresConfirmation()
+                    ->visible(fn ($record) => $record->status != '1')
+                    ->action(function ($record) {
+                        $record->update(['status' => '1']);
+                    }),
+
+                // Tombol Kirim WA Konfirmasi
+                Tables\Actions\Action::make('kirim_wa')
+                    ->label('Kirim WA')
+                    ->icon('heroicon-o-chat-bubble-left-right')
+                    ->color('info')
+                    ->url(fn ($record) => 'https://wa.me/'
+                        .\App\Models\Dataset::where('type', 'wa_admin')->value('value')
+                        .'?text='
+                        .urlencode("
+Halo saya Admin, reservasi *{$record->nama_pelanggan}* sudah diterima.
+
+Detail:
+Nama: {$record->nama_pelanggan}
+Tanggal: {$record->tanggal}
+Jam: {$record->jam_kedatangan}
+Merek: {$record->merek}
+Plat: {$record->no_plat}
+
+Silakan tindak lanjuti pesanan ini. Terima kasih 🙏
+            ")
+                    )
+                    ->openUrlInNewTab()
+
+                    // Hanya tampil untuk login role 0 dan 1
+                    ->visible(fn () => auth()->check() && in_array(auth()->user()->role, [0, 1])),
+
+                // Opsional → Jika hanya muncul ketika status sudah ACC
+                // ->visible(fn ($record) => $record->status == '1' && in_array(auth()->user()->role, [0, 1]))
             ])
+
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),

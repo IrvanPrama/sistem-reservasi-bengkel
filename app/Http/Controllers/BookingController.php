@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Booking;
+use App\Models\Dataset;
 use Illuminate\Http\Request;
 
 class BookingController extends Controller
@@ -24,12 +25,22 @@ class BookingController extends Controller
                 'keterangan' => 'nullable|string|max:1000',
                 'status' => 'nullable|string|max:50',
             ]);
-            // dd($data);
-            Booking::create($data);
 
-            return redirect()->back()->with('success', 'Reservasi berhasil dibuat!');
+            $booking = Booking::create($data);
+
+            return redirect()->route('booking.show', $booking->id)
+                ->with('success', 'Reservasi berhasil dibuat!');
         } catch (\Throwable $e) {
             return redirect()->back()->withErrors(['gagal' => $e->getMessage()]);
         }
+    }
+
+    public function show($id)
+    {
+        $booking = Booking::findOrFail($id);
+        // $adminPhone = Dataset::where('type', 'wa_admin')->first();
+        $adminPhone = Dataset::where('type', 'wa_admin')->value('value');
+
+        return view('booking.show', compact('booking', 'adminPhone'));
     }
 }
