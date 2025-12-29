@@ -26,6 +26,6 @@ class PelangganController extends Controller
 
         Pelanggan::create($data);
 
-        return redirect()->back()->with('success', 'Pendaftaran Member Berhasil! Anda kini menjadi member Bengkel Bagus 🚗🔥');
+        return redirect()->back()->with('success', 'Pendaftaran Member Berhasil! Anda kini menjadi member Bengkel KADEK MOTOR 🚗🔥');
     }
 }

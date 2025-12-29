@@ -3,7 +3,9 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\OrderItemResource\Pages;
+use App\Models\Booking;
 use App\Models\OrderItem;
+use App\Models\Product;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -15,8 +17,11 @@ class OrderItemResource extends Resource
     protected static ?string $model = OrderItem::class;
 
     protected static ?string $navigationLabel = 'Penjualan';
+    protected static ?string $modelLabel = 'Penjualan';
+    protected static ?string $pluralModelLabel = 'Penjualan';
 
-    protected static ?int $navigationSort = 8;
+    protected static ?string $navigationGroup = 'Transaksi';
+    protected static ?int $navigationSort = 10;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -24,18 +29,37 @@ class OrderItemResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('order_id')
+                Forms\Components\Select::make('order_id')
+                    ->options([
+                        // Ambil data dari model Booking
+                        Booking::all()->pluck('nomor_antrian', 'id')->toArray(),
+                    ])
                     ->required(),
+                Forms\Components\Select::make('product_name')
+                    ->required()
+                            ->reactive()
+
+                    ->options([
+                        // Ambil data dari model Product
+                        Product::all()->pluck('product_name', 'product_name')->toArray(),
+                    ])
+                    ->afterStateUpdated(function ($state, callable $set, $get) {
+                        $sellPrice = Product::where('product_name', $state)->first()->sell_price;
+                        $set('sku', Product::where('product_name', $state)->first()->sku);
+                        $set('sell_price', $sellPrice);
+                    }),
                 Forms\Components\TextInput::make('sku')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('product_name')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('quantity')
-                    ->required(),
+                     ->required(),
                 Forms\Components\TextInput::make('sell_price')
                     ->required(),
+                Forms\Components\TextInput::make('quantity')
+                    ->reactive()
+                    ->afterStateUpdated(function ($state, callable $set, $get) {
+                        $sellPrice = $get('sell_price');
+                        $grandTotal = ($sellPrice ?? 0) * ($state ?? 1);
+                        $set('total_amount', $grandTotal);
+                    }),
+
                 Forms\Components\TextInput::make('total_amount')
                     ->required(),
                 Forms\Components\Select::make('status')
@@ -43,6 +67,8 @@ class OrderItemResource extends Resource
                         '0' => 'pending',
                         '1' => 'acc',
                     ])
+                    ->required(),
+                Forms\Components\FileUpload::make('bukti_pembayaran')
                     ->required(),
             ]);
     }
@@ -69,6 +95,14 @@ class OrderItemResource extends Resource
                         '1' => 'ACC',
                         default => ucfirst($state),
                     }),
+                Tables\Columns\BadgeColumn::make('bukti_pembayaran')
+                    ->label('Bukti Transfer')
+                    ->colors([
+                        'info',
+                    ])
+                    ->formatStateUsing(fn ($state) => $state ? 'Lihat Bukti' : '-')
+                    ->url(fn ($record) => $record->bukti_pembayaran ? asset('storage/'.$record->bukti_pembayaran) : null)
+                    ->openUrlInNewTab(),
             ])
             ->filters([
             ])

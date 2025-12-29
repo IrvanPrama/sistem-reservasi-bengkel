@@ -19,6 +19,7 @@ return new class extends Migration {
             $table->decimal('sell_price', 15, 2);
             $table->decimal('total_price', 15, 2);
             $table->integer('status')->default(0); // 0: pending, 1: accepted, 2: canceled
+            $table->string('bukti_pembayaran')->nullable();
             $table->timestamps();
         });
     }

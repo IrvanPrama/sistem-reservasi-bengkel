@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProductStockResource\Pages;
+use App\Models\Product;
 use App\Models\ProductStock;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -15,20 +16,29 @@ class ProductStockResource extends Resource
     protected static ?string $model = ProductStock::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationGroup = 'Database';
+    protected static ?int $navigationSort = 3;
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('product_name')
-                  ->required()
-                  ->maxLength(255),
+                Forms\Components\Select::make('product_name')
+                  ->options([
+                      Product::query()->pluck('product_name', 'product_name')->toArray(),
+                  ])
+                  ->reactive()
+                  ->afterStateUpdated(function ($state, callable $set) {
+                      $product = Product::where('product_name', $state)->first();
+                      $set('sku', $product?->sku ?? '');
+                      $set('sell_price', $product?->sell_price ?? '');
+                  }),
                 Forms\Components\TextInput::make('sku')
                     ->maxLength(100),
                 Forms\Components\TextInput::make('quantity')
                     ->numeric()
                     ->required(),
-                Forms\Components\TextInput::make('price')
+                Forms\Components\TextInput::make('sell_price')
                     ->numeric()
                     ->required(),
                 Forms\Components\Textarea::make('notes'),

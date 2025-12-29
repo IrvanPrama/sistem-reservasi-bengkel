@@ -7,7 +7,7 @@
                     rounded-2xl p-9 shadow-[0_10px_40px_rgba(0,0,0,0.45)]">
 
             <h2 class="text-center text-3xl font-bold text-white mb-9 tracking-wide">
-                Reservasi Bengkel Online
+                Booking Bengkel Online
             </h2>
 
             @if(session('success'))

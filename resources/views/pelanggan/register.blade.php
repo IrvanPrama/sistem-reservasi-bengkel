@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Pendaftaran Member | Bengkel Bagus</title>
+<title>Pendaftaran Member | KADEK MOTOR</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
 
@@ -38,7 +38,7 @@
 <nav class="fixed top-0 w-full backdrop-blur-xl bg-white/10 border-b border-white/20 shadow-md z-50 fade">
     <div class="max-w-6xl mx-auto flex justify-between items-center px-4 py-3">
 
-        <h1 class="text-2xl font-extrabold text-white tracking-wider">BENGKEL BAGUS</h1>
+        <h1 class="text-2xl font-extrabold text-white tracking-wider">KADEK MOTOR</h1>
 
         <!-- Desktop Menu -->
 <ul class="hidden md:flex gap-8 text-white font-semibold text-sm tracking-widest">
@@ -55,7 +55,7 @@
         <a href="/booking"
            class="pb-1 hover:text-yellow-300 duration-300 
            {{ request()->is('booking') ? 'text-yellow-300 border-b-2 border-yellow-400' : '' }}">
-           RESERVASI
+           BOOKING
         </a>
     </li>
 
@@ -89,7 +89,7 @@
 
     <ul class="mt-10 space-y-5 text-white font-semibold text-base">
         <li><a href="/" class="block hover:text-yellow-300 duration-300">🏠 Home</a></li>
-        <li><a href="/booking" class="block hover:text-yellow-300 duration-300">📝 Reservasi</a></li>
+        <li><a href="/booking" class="block hover:text-yellow-300 duration-300">📝 Booking</a></li>
         <li><a href="/daftar-member" class="block text-yellow-300 font-bold">👥 Daftar Member</a></li>
         <li><a href="#kontak" class="block hover:text-yellow-300 duration-300">☎ Kontak</a></li>
         <li><a href="/admin/login" class="block hover:text-yellow-300 duration-300">🔐 Admin Login</a></li>
@@ -111,7 +111,7 @@
                 rounded-2xl p-9 shadow-[0_10px_40px_rgba(0,0,0,0.45)]">
 
         <h2 class="text-center text-3xl font-bold text-white mb-9 tracking-wide">
-            Daftar Member Bengkel Bagus
+            Daftar Member Bengkel KADEK MOTOR
         </h2>
 
         @if(session('success'))

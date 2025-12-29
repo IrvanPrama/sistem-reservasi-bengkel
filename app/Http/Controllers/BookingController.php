@@ -29,7 +29,7 @@ class BookingController extends Controller
             $booking = Booking::create($data);
 
             return redirect()->route('booking.show', $booking->id)
-                ->with('success', 'Reservasi berhasil dibuat!');
+                ->with('success', 'Booking berhasil dibuat!');
         } catch (\Throwable $e) {
             return redirect()->back()->withErrors(['gagal' => $e->getMessage()]);
         }

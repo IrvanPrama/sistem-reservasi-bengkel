@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 
 // 1
-Route::view('/', 'booking')->name('booking');        // menampilkan form
+Route::view('/', 'landing-page.index')->name('landing-page');
 Route::view('/booking', 'booking')->name('booking');        // menampilkan form
 Route::post('/reservasi', [BookingController::class, 'store'])->name('reservasi.store');
 

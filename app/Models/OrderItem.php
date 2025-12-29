@@ -14,6 +14,7 @@ class OrderItem extends Model
         'sell_price',
         'total_amount',
         'status',
+        'bukti_pembayaran',
     ];
 
     public function asset()

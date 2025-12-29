@@ -20,7 +20,8 @@ class PembelianResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?string $navigationLabel = 'Pembelian Produk';
-    protected static ?int $navigationSort = 9;
+    protected static ?string $navigationGroup = 'Database';
+    protected static ?int $navigationSort = 2;
 
     public static function form(Form $form): Form
     {

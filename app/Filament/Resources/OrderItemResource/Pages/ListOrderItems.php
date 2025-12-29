@@ -10,6 +10,11 @@ class ListOrderItems extends ListRecords
 {
     protected static string $resource = OrderItemResource::class;
 
+    public function getTitle(): string
+    {
+        return 'Penjualan';
+    }
+
     protected function getHeaderActions(): array
     {
         return [

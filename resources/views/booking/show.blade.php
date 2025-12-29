@@ -7,7 +7,7 @@
                 border border-white/20 rounded-2xl p-7 shadow-[0_10px_40px_rgba(0,0,0,0.45)]">
 
         <h2 class="text-center text-3xl font-bold text-white mb-6 tracking-wide">
-            Detail Reservasi
+            Detail Booking
         </h2>
 
         <!-- SUCCESS ALERT -->
@@ -51,7 +51,7 @@
         @php
 
             $pesan = urlencode("
-Halo Admin, ada reservasi baru:
+Halo Admin, ada booking baru:
 
 Nama: $booking->nama_pelanggan
 Tanggal: $booking->tanggal
@@ -76,7 +76,7 @@ Terima kasih.
            class="block w-full mt-3 bg-white/80 hover:bg-white text-blue-900 
                   text-lg font-semibold py-3 rounded-xl text-center shadow 
                   hover:scale-[1.02] transition-all">
-            Kembali ke Form Reservasi
+            Kembali ke Form Booking
         </a>
 
     </div>

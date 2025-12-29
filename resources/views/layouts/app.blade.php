@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ $title ?? 'Reservasi Bengkel' }}</title>
+    <title>{{ $title ?? 'Kadek Motor' }}</title>
 
     <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -39,7 +39,7 @@
 <nav class="fixed top-0 w-full backdrop-blur-xl bg-white/10 border-b border-white/20 shadow-md z-50 fade">
     <div class="max-w-6xl mx-auto flex justify-between items-center px-4 py-3">
 
-        <h1 class="text-2xl font-extrabold text-white tracking-wider">BENGKEL BAGUS</h1>
+        <h1 class="text-2xl font-extrabold text-white tracking-wider">KADEK MOTOR</h1>
 
         <!-- Desktop Menu -->
         <ul class="hidden md:flex gap-8 text-white font-semibold text-sm tracking-widest">
@@ -56,7 +56,7 @@
                 <a href="/booking"
                    class="pb-1 hover:text-yellow-300 duration-300 
                    {{ request()->is('booking') ? 'text-yellow-300 border-b-2 border-yellow-400' : '' }}">
-                    RESERVASI
+                    BOOKING
                 </a>
             </li>
 

@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('product_stocks', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('product_name');
             $table->string('sku')->unique()->nullable();
             $table->integer('quantity')->default(0);
             $table->decimal('sell_price', 12, 2)->default(0); // atau integer jika ingin menyimpan dalam cents

@@ -15,8 +15,8 @@ class BookingResource extends Resource
     protected static ?string $model = Booking::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationLabel = 'Reservasi Bengkel';
-    protected static ?string $navigationGroup = 'Layanan Pelanggan';
+    protected static ?string $navigationLabel = 'Booking';
+    protected static ?string $navigationGroup = 'Transaksi';
 
     public static function form(Form $form): Form
     {
@@ -126,7 +126,7 @@ class BookingResource extends Resource
                         .\App\Models\Dataset::where('type', 'wa_admin')->value('value')
                         .'?text='
                         .urlencode("
-Halo saya Admin, reservasi *{$record->nama_pelanggan}* sudah diterima.
+Halo saya Admin, booking *{$record->nama_pelanggan}* sudah diterima.
 
 Detail:
 Nama: {$record->nama_pelanggan}
