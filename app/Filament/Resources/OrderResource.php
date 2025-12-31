@@ -12,6 +12,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\Action;
 use Filament\Tables\Table;
 
 class OrderResource extends Resource
@@ -142,6 +143,12 @@ class OrderResource extends Resource
          ])
          ->filters([])
          ->actions([
+             Action::make('send_whatsapp')
+    ->label('Kirim Invoice WA')
+    ->icon('heroicon-o-phone')
+    ->url(fn ($record) => route('invoice.send', $record))
+    ->openUrlInNewTab()
+    ->color('success'),
              Tables\Actions\EditAction::make(),
          ])
          ->bulkActions([

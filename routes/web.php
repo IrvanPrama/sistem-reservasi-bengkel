@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\PelangganController;
 use App\Http\Controllers\ServicePriceController;
 use Illuminate\Support\Facades\Route;
@@ -28,5 +29,7 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::get('/booking/{id}', [BookingController::class, 'show'])->name('booking.show');
+Route::get('/invoice/{order}/send', [InvoiceController::class, 'sendInvoiceToWhatsapp'])
+    ->name('invoice.send');
 
 require __DIR__.'/auth.php';

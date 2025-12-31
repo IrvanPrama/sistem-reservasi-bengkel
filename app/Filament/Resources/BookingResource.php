@@ -122,8 +122,8 @@ class BookingResource extends Resource
                     ->label('Kirim WA')
                     ->icon('heroicon-o-chat-bubble-left-right')
                     ->color('info')
-                    ->url(fn ($record) => 'https://wa.me/'
-                        .\App\Models\Dataset::where('type', 'wa_admin')->value('value')
+                    ->url(fn ($record) => 'https://wa.me/'.
+                        $record->no_telepon
                         .'?text='
                         .urlencode("
 Halo saya Admin, booking *{$record->nama_pelanggan}* sudah diterima.
@@ -135,7 +135,7 @@ Jam: {$record->jam_kedatangan}
 Merek: {$record->merek}
 Plat: {$record->no_plat}
 
-Silakan tindak lanjuti pesanan ini. Terima kasih 🙏
+Silakan jawab ya untuk mengkonfirmasi kedatangan Anda. Terima kasih :D
             ")
                     )
                     ->openUrlInNewTab()
