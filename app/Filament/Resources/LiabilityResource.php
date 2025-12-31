@@ -17,6 +17,7 @@ class LiabilityResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationGroup = 'Laporan';
     protected static ?int $navigationSort = 3;
+    protected static ?string $navigationLabel = 'Lianbilitas';
 
     public static function form(Form $form): Form
     {

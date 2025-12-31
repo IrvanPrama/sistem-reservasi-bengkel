@@ -17,6 +17,7 @@ class NeracaTypeResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationGroup = 'Database';
     protected static ?int $navigationSort = 30;
+    protected static ?string $navigationLabel = 'Tipe Akun Neraca';
 
     public static function form(Form $form): Form
     {

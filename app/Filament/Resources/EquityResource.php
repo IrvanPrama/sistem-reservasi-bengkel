@@ -17,6 +17,7 @@ class EquityResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationGroup = 'Laporan';
     protected static ?int $navigationSort = 2;
+    protected static ?string $navigationLabel = 'Equitas';
 
     public static function form(Form $form): Form
     {

@@ -246,22 +246,22 @@
                     <h2 class="section-heading">Layanan Kami</h2>
                 </div>
                 <div class="row">
+                    @foreach ($service_price as $service)
                     <div class="col-1-of-3">
                         <div class="tourcards">
                             <div class="tourcards_side tourcards_side-front">
                                 <div
-                                    class="tourcards_picture tourcards_picture-2"
+                                    class="tourcards_picture {{ $service->service_image }}"
                                 ></div>
                                 <div class="tourcards_heading">
                                     <span
                                         class="tourcards_heading-span tourcards_heading-span--2"
-                                        >Service Ringan</span
+                                        >{{ $service->service_name }}</span
                                     >
                                 </div>
                                 <div class="tourcards_details">
                                     <p class="tourcards_details__text">
-                                        Layanan service ringan untuk perawatan
-                                        rutin motor Anda
+                                        {{ $service->description }}
                                     </p>
                                     <ul>
                                         <li>
@@ -272,7 +272,7 @@
                                                     xlink:href="{{'images/Sprite.svg#icon-adjust'}}"
                                                 ></use>
                                             </svg>
-                                            30 menit Service
+                                            {{ $service->service_name }}
                                         </li>
                                         <li>
                                             <svg
@@ -281,16 +281,7 @@
                                                 <use
                                                     xlink:href="{{'images/Sprite.svg#icon-add-user'}}"
                                                 ></use></svg
-                                            >Upto 4 jam
-                                        </li>
-                                        <li>
-                                            <svg
-                                                class="tourcards_details__icon"
-                                            >
-                                                <use
-                                                    xlink:href="{{'images/Sprite.svg#icon-address'}}"
-                                                ></use></svg
-                                            >2 montir
+                                            >{{ $service->workers}} montir
                                         </li>
                                         <li>
                                             <svg
@@ -299,14 +290,25 @@
                                                 <use
                                                     xlink:href="{{'images/Sprite.svg#icon-warning'}}"
                                                 ></use></svg
-                                            >Service ringan
+                                            >  
+                                           {{ $service->duration }}
+
                                         </li>
+                                        <li>
+                                            <svg
+                                                class="tourcards_details__icon"
+                                            >
+                                                <use
+                                                    xlink:href="{{'images/Sprite.svg#icon-address'}}"
+                                                ></use></svg
+                                            > Upto {{ $service->duration_upto }}  
+                                        </li>
+                                        
                                     </ul>
                                 </div>
                             </div>
                             <div
-                                class="tourcards_side tourcards_side-back tourcards_side-back--2"
-                            >
+                                class="tourcards_side tourcards_side-back tourcards_side-back--2">
                                 <div class="tourcards_action">
                                     <div class="tourcards_action-price">
                                         <p class="tourcards_action-price--only">
@@ -315,7 +317,7 @@
                                         <p
                                             class="tourcards_action-price--value"
                                         >
-                                            <i>Rp 100K</i>
+                                            <i>{{ $service->price }}</i>
                                         </p>
                                     </div>
                                     <a
@@ -327,7 +329,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-1-of-3">
+                    @endforeach
+                    <!-- <div class="col-1-of-3">
                         <div class="tourcards">
                             <div class="tourcards_side tourcards_side-front">
                                 <div
@@ -494,7 +497,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="center-uclass u-margin-top-large">
                     <a href="#section-tour" class="button button-green"

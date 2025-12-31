@@ -2,11 +2,12 @@
 
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\PelangganController;
+use App\Http\Controllers\ServicePriceController;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 
 // 1
-Route::view('/', 'landing-page.index')->name('landing-page');
+Route::get('/', [ServicePriceController::class, 'index'])->name('landing-page');
 Route::view('/booking', 'booking')->name('booking');        // menampilkan form
 Route::post('/reservasi', [BookingController::class, 'store'])->name('reservasi.store');
 
