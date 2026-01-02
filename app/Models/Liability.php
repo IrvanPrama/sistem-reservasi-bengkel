@@ -14,5 +14,6 @@ class Liability extends Model
         'nama',
         'nominal',
         'jatuh_tempo',
+        'tanggal',
     ];
 }

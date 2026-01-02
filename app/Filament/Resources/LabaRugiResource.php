@@ -25,7 +25,7 @@ class LabaRugiResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('type')->label('Tipe')->required(),
-                Forms\Components\DatePicker::make('date')->label('Tanggal')->required(),
+                Forms\Components\DatePicker::make('tanggal')->label('Tanggal')->required(),
                 Forms\Components\TextInput::make('product_name')->label('Nama Produk')->required(),
                 Forms\Components\Textarea::make('pemasukan')->label('Pemasukan'),
                 Forms\Components\Textarea::make('pengeluaran')->label('Pengeluaran'),
@@ -37,7 +37,7 @@ class LabaRugiResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('type')->label('Tipe'),
-                Tables\Columns\TextColumn::make('date')->label('Tanggal')->date(),
+                Tables\Columns\TextColumn::make('tanggal')->label('Tanggal')->date(),
                 Tables\Columns\TextColumn::make('product_name')->label('Nama Produk'),
                 Tables\Columns\TextColumn::make('pemasukan')->label('Pemasukan')
                   ->money('IDR')

@@ -12,7 +12,7 @@ class LabaRugi extends Model
     use Notifiable;
     protected $fillable = [
         'type',
-        'date',
+        'tanggal',
         'order_item_id',
         'product_name',
         'pemasukan',

@@ -13,5 +13,6 @@ class Equity extends Model
     protected $fillable = [
         'nama',
         'nominal',
+        'tanggal',
     ];
 }

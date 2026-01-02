@@ -29,7 +29,8 @@ class LiabilityResource extends Resource
                 Forms\Components\TextInput::make('nominal')
                     ->required()
                     ->numeric(),
-                Forms\Components\DatePicker::make('jatuh_tempo')
+                Forms\Components\DatePicker::make('jatuh_tempo'),
+                Forms\Components\DatePicker::make('tanggal')
                     ->required(),
             ]);
     }
@@ -44,6 +45,10 @@ class LiabilityResource extends Resource
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('jatuh_tempo')
+                    ->date()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('tanggal')
+                    ->label('Periode')
                     ->date()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')

@@ -47,8 +47,10 @@ class AssetResource extends Resource
                 Forms\Components\TextInput::make('kondisi')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\DatePicker::make('date')
-                    ->required(),
+                Tables\Columns\TextColumn::make('tanggal')
+                    ->label('Periode')
+                    ->date()
+                    ->sortable(),
             ]);
     }
 

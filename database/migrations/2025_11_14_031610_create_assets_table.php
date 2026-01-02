@@ -19,7 +19,7 @@ return new class extends Migration {
             $table->integer('nominal');
             $table->integer('total_nominal')->nullable();
             $table->string('kondisi');
-            $table->date('date');
+            $table->date('tanggal');
             $table->timestamps();
         });
     }

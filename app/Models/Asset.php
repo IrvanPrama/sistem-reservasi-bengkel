@@ -18,6 +18,6 @@ class Asset extends Model
         'nominal',
         'total_nominal',
         'kondisi',
-        'date',
+        'tanggal',
     ];
 }

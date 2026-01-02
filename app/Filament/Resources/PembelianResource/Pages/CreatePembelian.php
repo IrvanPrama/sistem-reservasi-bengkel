@@ -4,6 +4,7 @@ namespace App\Filament\Resources\PembelianResource\Pages;
 
 use App\Filament\Resources\PembelianResource;
 use App\Models\Asset;
+use App\Models\Product;
 use App\Models\ProductStock;
 use Filament\Resources\Pages\CreateRecord;
 
@@ -17,6 +18,7 @@ class CreatePembelian extends CreateRecord
 
         // Cek apakah produk sudah ada di tabel product_stocks
         $productStock = ProductStock::where('sku', $pembelian->sku)->first();
+        $productProduct = Product::where('sku', $pembelian->sku)->first();
         $productAsset = Asset::where('sku', $pembelian->sku)->first();
 
         if ($productStock) {
@@ -24,6 +26,10 @@ class CreatePembelian extends CreateRecord
             $productStock->increment('quantity', $pembelian->qty);
 
             // (opsional) update harga jual jika ingin sinkron dengan pembelian terbaru
+            $productProduct->update([
+                'sell_price' => $pembelian->sell_price,
+            ]);
+
             $productStock->update([
                 'sell_price' => $pembelian->sell_price,
             ]);

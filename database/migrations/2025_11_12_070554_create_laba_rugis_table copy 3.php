@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->string('order_item_id')->nullable();
             $table->string('type');
-            $table->date('date');
+            $table->date('tanggal');
             $table->string('product_name');
             $table->decimal('pemasukan', 15, 2)->nullable();
             $table->decimal('pengeluaran', 15, 2)->nullable();

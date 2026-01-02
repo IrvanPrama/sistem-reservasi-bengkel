@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->string('nama');
             $table->integer('nominal');
             $table->date('jatuh_tempo');
+            $table->date('tanggal');
             $table->timestamps();
         });
     }

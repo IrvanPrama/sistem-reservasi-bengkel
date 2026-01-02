@@ -29,6 +29,10 @@ class EquityResource extends Resource
                 Forms\Components\TextInput::make('nominal')
                     ->required()
                     ->numeric(),
+                Tables\Columns\TextColumn::make('tanggal')
+                    ->label('Periode')
+                    ->date()
+                    ->sortable(),
             ]);
     }
 
