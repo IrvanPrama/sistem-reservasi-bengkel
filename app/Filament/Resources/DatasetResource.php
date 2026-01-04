@@ -2,43 +2,31 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\UserResource\Pages;
-use App\Models\User;
+use App\Filament\Resources\DatasetResource\Pages;
+use App\Models\Dataset;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 
-class UserResource extends Resource
+class DatasetResource extends Resource
 {
-    protected static ?string $model = User::class;
+    protected static ?string $model = Dataset::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
-    protected static ?string $navigationLabel = 'Daftar User';
-
-    protected static ?string $label = 'User';
     protected static ?string $navigationGroup = 'Database';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->label('Nama Pengguna')
+                Forms\Components\TextInput::make('type')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('email')
-                ->email()
-                ->required()
-                ->maxLength(255)
-                ->label('Alamat Email'),
-                Forms\Components\DateTimePicker::make('email_verified_at'),
-                Forms\Components\TextInput::make('password')
-                    ->password()
+                Forms\Components\Textarea::make('value')
                     ->required()
-                    ->maxLength(255),
+                    ->columnSpanFull(),
             ]);
     }
 
@@ -46,14 +34,10 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
-                    ->label('Nama Pengguna')
+                Tables\Columns\TextColumn::make('type')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('email')
+                Tables\Columns\TextColumn::make('value')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('email_verified_at')
-                    ->dateTime()
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -84,9 +68,9 @@ class UserResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListUsers::route('/'),
-            'create' => Pages\CreateUser::route('/create'),
-            'edit' => Pages\EditUser::route('/{record}/edit'),
+            'index' => Pages\ListDatasets::route('/'),
+            'create' => Pages\CreateDataset::route('/create'),
+            'edit' => Pages\EditDataset::route('/{record}/edit'),
         ];
     }
 }

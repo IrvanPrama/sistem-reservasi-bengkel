@@ -21,7 +21,6 @@ class OrderItemResource extends Resource
     protected static ?string $pluralModelLabel = 'Penjualan';
 
     protected static ?string $navigationGroup = 'Transaksi';
-    protected static ?int $navigationSort = 10;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -29,6 +28,7 @@ class OrderItemResource extends Resource
     {
         return $form
             ->schema([
+                Forms\Components\DatePicker::make('tanggal'),
                 Forms\Components\Select::make('order_id')
                     ->options([
                         // Ambil data dari model Booking
@@ -77,6 +77,7 @@ class OrderItemResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('tanggal')->label('Tanggal'),
                 Tables\Columns\TextColumn::make('order_id')->label('Booking ID'),
                 Tables\Columns\TextColumn::make('sku')->label('SKU'),
                 Tables\Columns\TextColumn::make('product_name')->label('Product Name'),

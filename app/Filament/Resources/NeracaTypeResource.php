@@ -16,16 +16,19 @@ class NeracaTypeResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationGroup = 'Database';
-    protected static ?int $navigationSort = 30;
     protected static ?string $navigationLabel = 'Tipe Akun Neraca';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('type')
+                Forms\Components\Select::make('type')
                     ->required()
-                    ->maxLength(255),
+                    ->options(
+                        ['asset' => 'Asset',
+                            'equity' => 'Equity',
+                            'liabilitas' => 'Liabiltas']
+                    ),
                 Forms\Components\TextInput::make('sub_type')
                     ->required()
                     ->maxLength(255),

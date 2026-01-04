@@ -21,13 +21,14 @@ class OrderResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationLabel = 'Sparepart & Layanan';
-    protected static ?int $navigationSort = 7;
     protected static ?string $navigationGroup = 'Transaksi';
+    protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
+                Forms\Components\DatePicker::make('tanggal'),
                 Select::make('nomor_antrian')
                     ->label('No. Antrian')
                     ->options(Booking::query()->pluck('nomor_antrian', 'id'))
@@ -110,6 +111,8 @@ class OrderResource extends Resource
     {
         return $table
          ->columns([
+             Tables\Columns\TextColumn::make('tanggal')->label('Tanggal'),
+
              Tables\Columns\TextColumn::make('id')
                  ->label('Booking ID')
                  ->sortable(),

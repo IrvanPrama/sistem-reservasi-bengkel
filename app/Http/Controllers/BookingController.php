@@ -43,4 +43,11 @@ class BookingController extends Controller
 
         return view('booking.show', compact('booking', 'adminPhone'));
     }
+
+    public function index()
+    {
+        $adminPhone = Dataset::where('type', 'wa_admin')->value('value');
+
+        return view('layout.app', compact('adminPhone'));
+    }
 }

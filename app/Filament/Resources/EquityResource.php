@@ -4,8 +4,10 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\EquityResource\Pages;
 use App\Models\Equity;
+use App\Models\NeracaType;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Forms\Set;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -16,23 +18,27 @@ class EquityResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationGroup = 'Laporan';
-    protected static ?int $navigationSort = 2;
     protected static ?string $navigationLabel = 'Equitas';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('nama')
-                    ->required()
-                    ->maxLength(255),
+                Forms\Components\Select::make('nama')
+                    ->options(
+                        NeracaType::pluck('category', 'category')->toArray()
+                    )
+                    ->reactive()
+                    ->afterStateUpdated(function (Set $set, $state) {
+                        $set(
+                            'kategori',
+                            NeracaType::where('category', $state)->value('sub_type')
+                        );
+                    }),
                 Forms\Components\TextInput::make('nominal')
                     ->required()
                     ->numeric(),
-                Tables\Columns\TextColumn::make('tanggal')
-                    ->label('Periode')
-                    ->date()
-                    ->sortable(),
+                Forms\Components\DatePicker::make('tanggal'),
             ]);
     }
 
@@ -44,6 +50,10 @@ class EquityResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('nominal')
                     ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('tanggal')
+                    ->label('Periode')
+                    ->date()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
