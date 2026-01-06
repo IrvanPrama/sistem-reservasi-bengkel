@@ -16,8 +16,9 @@ class ProductStockResource extends Resource
     protected static ?string $model = ProductStock::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationGroup = 'Database';
+    protected static ?string $navigationGroup = 'Master Data';
     protected static ?string $navigationLabel = 'Lihat Stok Produk';
+    protected static ?int $navigationSort = 16;
 
     public static function form(Form $form): Form
     {

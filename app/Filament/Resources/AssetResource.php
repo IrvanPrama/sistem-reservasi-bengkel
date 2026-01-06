@@ -19,7 +19,7 @@ class AssetResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationGroup = 'Laporan';
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = 5;
     protected static ?string $navigationLabel = 'Aset';
 
     public static function form(Form $form): Form

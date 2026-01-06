@@ -19,6 +19,7 @@ class NeracaPage extends Page implements HasForms
     protected static string $view = 'filament.pages.neraca-page';
     protected static ?string $navigationLabel = 'Neraca';
     protected static ?string $navigationGroup = 'Laporan';
+    protected static ?int $navigationSort = 4;
 
     public $bulan;
     public $tahun;

@@ -15,8 +15,9 @@ class ServicePriceResource extends Resource
     protected static ?string $model = ServicePrice::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationGroup = 'Database';
+    protected static ?string $navigationGroup = 'Master Data';
     protected static ?string $navigationLabel = 'Setting Harga Landing Page';
+    protected static ?int $navigationSort = 17;
 
     public static function form(Form $form): Form
     {

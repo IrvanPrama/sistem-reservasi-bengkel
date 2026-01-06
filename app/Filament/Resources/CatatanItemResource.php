@@ -17,6 +17,7 @@ class CatatanItemResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationGroup = 'Laporan';
     protected static ?string $navigationLabel = 'Daftar Catatan';
+    protected static ?int $navigationSort = 6;
 
     public static function form(Form $form): Form
     {

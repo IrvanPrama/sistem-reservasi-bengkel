@@ -132,22 +132,22 @@
                                  class="class_name"
                                  src="img/img-default.jpg"> -->
                             <img
-                                src="{{ asset('images/Comp-01.jpeg') }}"
+                                src="{{ asset('images/bkl1.jpeg') }}"
                                 alt="photo-1"
                                 class="comp_image comp_image-1"
                             />
                             <img
-                                src="{{ asset('images/Comp-02.jpeg') }}"
+                                src="{{ asset('images/bkl2.jpeg') }}"
                                 alt="photo-2"
                                 class="comp_image comp_image-2"
                             />
                             <img
-                                src="{{ asset('images/Comp-03.jpeg') }}"
+                                src="{{ asset('images/bkl3.jpeg') }}"
                                 alt="photo-3"
                                 class="comp_image comp_image-3"
                             />
                             <img
-                                src="{{ asset('images/Comp-04.jpeg') }}"
+                                src="{{ asset('images/bkl4.jpeg') }}"
                                 alt="photo-4"
                                 class="comp_image comp_image-4"
                             />
